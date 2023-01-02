@@ -32,18 +32,30 @@ def add_mark():
         player_mark = "❌"
 
     print \
-        ("To make a move, enter the (row number,column number) of the cell you would like to mark, e.g. 1,1 for top left.")
+        ("Enter the (row number,column number) of the cell you would like to mark, e.g. 1,1 for top left, 1,2 for top middle.")
     choice = input(f"{player_mark}Player {player_num}'s choice: ")
-    row = int(choice.split(",")[0])
-    col = int(choice.split(",")[1])
 
-    if board[row - 1][col - 1] == " ":
-        board[row - 1][col - 1] = mark
-        print_board()
-        is_player_1 = not is_player_1
-    else:
-        print("Cell is taken. Please try again.")
+    try:
+
+        row = int(choice.split(",")[0]) - 1
+        col = int(choice.split(",")[1]) - 1
+
+        if row < 0 or row > 2 or col < 0 or row > 2:
+            raise IndexError
+
+        if board[row][col] == " ":
+            board[row][col] = mark
+            print_board()
+            is_player_1 = not is_player_1
+        else:
+            print("Cell is taken. Please try again.")
+            add_mark()
+    except ValueError:
+        print("Invalid value entered. Please try again.\n")
         add_mark()
+    except IndexError:
+        print("Only numbers between 1 and 3 are accepted as row/column number. Please try again.\n")
+
 
 
 def board_has_space():
